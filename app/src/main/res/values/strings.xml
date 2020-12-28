@@ -1,0 +1,53 @@
+<resources>
+
+    <!--  General Strings  -->
+    <string name="sign_up">Sign Up</string>
+    <string name="retailer_heading">Grow\nYour Business</string>
+    <string name="retailer_tag_line">We will help you to grow your business using online services!</string>
+    <string name="create_account">Create\nAccount</string>
+    <string name="how_we_work">How we work?</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="forget_password">Forget Password</string>
+
+    <!--  Field Strings  -->
+    <string name="enter_full_name">Full Name</string>
+    <string name="enter_username">Username</string>
+    <string name="enter_email">Email</string>
+    <string name="enter_phone_number">Phone Number</string>
+    <string name="enter_password">Password</string>
+
+
+    <!--   OTP Screen -->
+    <string name="otp_code_text">Co\nde</string>
+    <string name="otp_verification_text">Verification</string>
+    <string name="otp_description_text">Enter one time password sent on\n+923332225522</string>
+
+
+    <!--   Reset Password -->
+    <string name="new_credentials">New\nCredentials</string>
+    <string name="new_credentials_detail">Your identity has been verified!\nSet your new password</string>
+    <string name="forget_password_detail">Provide your account\'s email for which you want to reset your password!</string>
+    <string name="password_updated">Password\nUpdated</string>
+    <string name="password_updated_success_message">your password has been updated!</string>
+    <string name="make_selection">Make\nSelection</string>
+    <string name="make_selection_detail">Select which contact detail should we use to reset your password?</string>
+    <string name="via_sms">via sms:</string>
+    <string name="via_mail">via mail:</string>
+    <string name="verify_code">Verify Code</string>
+    <string name="todo">TODO</string>
+
+    <string-array name="uom">
+        <item>Select a Unit of Measure</item>
+        <item>Pcs</item>
+        <item>Dozen</item>
+        <item>KG</item>
+        <item>Grams</item>
+    </string-array>
+
+    <string-array name="invoice_type">
+        <item>Cash Invoices</item>
+        <item>Credit Invoices</item>
+        <item>Debit Invoices</item>
+    </string-array>
+
+</resources>

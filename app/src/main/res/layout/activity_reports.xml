@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E2D3FB"
+    android:orientation="vertical"
+    tools:context=".Reports.Reports">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/black"
+            android:padding="10dp"
+            android:src="@drawable/general_back_icon"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/muli_black"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:text="Reports"
+            android:textSize="30dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/customerReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="24dp"
+            android:backgroundTint="@color/app_logo"
+            android:text="Customer Monthly Report"
+            app:strokeColor="@color/black"
+            app:strokeWidth="1dp"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/productSalesReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="24dp"
+            android:backgroundTint="@color/app_logo"
+            android:text="Products Monthly Sales"
+            android:textColor="@color/black"
+            app:strokeColor="@color/black"
+            app:strokeWidth="1dp"
+            app:layout_constraintTop_toBottomOf="@+id/customerReport" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/epBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="24dp"
+            android:backgroundTint="@color/app_logo"
+            android:text="Expenses and Profit"
+            app:strokeColor="@color/black"
+            app:strokeWidth="1dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/productSalesReport" />
+
+    </LinearLayout>
+</LinearLayout>
