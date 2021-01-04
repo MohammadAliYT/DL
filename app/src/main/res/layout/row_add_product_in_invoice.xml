@@ -12,6 +12,10 @@
         android:hint="Product Name"
         android:padding="10dp"
         android:layout_marginTop="20dp"
+        android:inputType="textCapSentences"
+        android:lines="1"
+        android:maxLines="1"
+        android:minLines="1"
         />
 
     <EditText
@@ -21,7 +25,9 @@
         android:layout_weight="1"
         android:hint="Qty"
         android:layout_marginTop="20dp"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:inputType="number"
+        />
 
     <EditText
         android:id="@+id/pprice"
@@ -30,7 +36,9 @@
         android:layout_weight="1"
         android:hint="Price"
         android:layout_marginTop="20dp"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:inputType="number"
+        />
 
     <ImageView
         android:id="@+id/premovebtn"

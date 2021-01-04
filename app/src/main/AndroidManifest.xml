@@ -3,6 +3,8 @@
     package="com.example.dl">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,8 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Payments.addPayment"></activity>
-        <activity android:name=".Payments.PaymentList"></activity>
+        <activity android:name=".History.CustomerHistory"></activity>
+        <activity android:name=".History.History" />
+        <activity android:name=".Trends.ProductTrend" />
+        <activity android:name=".Trends.CustomerTrend" />
+        <activity android:name=".Trends.Trends" />
+        <activity android:name=".Payments.addPayment" />
+        <activity android:name=".Payments.PaymentList" />
         <activity android:name=".Invoice.addInvoice" />
         <activity android:name=".Invoice.InvoiceList" />
         <activity android:name=".Expenses.addExpense" />

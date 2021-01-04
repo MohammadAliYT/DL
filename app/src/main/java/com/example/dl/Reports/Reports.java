@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.dl.Contacts.ContactList;
 import com.example.dl.R;
+import com.example.dl.User.UserDashboard;
 
 public class Reports extends AppCompatActivity {
 
@@ -54,5 +56,10 @@ public class Reports extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void goToHomeFromReports(View view) {
+        startActivity(new Intent(getApplicationContext(), UserDashboard.class));
+        finish();
     }
 }

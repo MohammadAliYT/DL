@@ -50,4 +50,18 @@
         <item>Debit Invoices</item>
     </string-array>
 
+    <string-array name="customers_name">
+        <item>Select Customer</item>
+        <item>Mohammad Ali</item>
+        <item>Salman Ali</item>
+        <item>Sher Ali</item>
+    </string-array>
+
+    <string-array name="product_name">
+        <item>Select Customer</item>
+        <item>Dove Shampoo</item>
+        <item>Coca-Cola 1.5 Ltr</item>
+        <item>Nescafe Coffee</item>
+    </string-array>
+
 </resources>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#B7E4C7"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.example.dl.User.UserDashboard">
 
@@ -30,8 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/welcomeText"
-            android:layout_marginTop="1dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="1dp"
             android:elevation="30dp"
             android:fontFamily="@font/muli"
             android:shadowColor="#66ff66"
@@ -53,6 +53,20 @@
             android:padding="5dp"
             android:src="@drawable/add_missing_place_icon" />
 
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dashboardName"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/muli_black"
+            android:gravity="center"
+            android:shadowColor="@color/black"
+            android:text="Menu"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+
     </RelativeLayout>
 
     <ScrollView
@@ -69,130 +83,130 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Menu"
-                    android:fontFamily="@font/muli_black"
-                    android:textSize="25dp"
-                    android:textColor="@color/black"
-                    android:shadowColor="@color/black"
-                    android:gravity="center"
-                    android:layout_marginBottom="20dp"
-                    />
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/contacts"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
+                    android:layout_below="@+id/text"
+                    android:backgroundTint="#2a9d8f"
                     android:drawableLeft="@drawable/ic_person"
                     android:drawableTint="@color/black"
                     android:elevation="5dp"
                     android:fontFamily="@font/muli_black"
                     android:padding="20dp"
                     android:text="Contacts"
-                    android:textSize="30dp"
                     android:textColor="@color/black"
+                    android:textSize="30dp"
                     app:cornerRadius="20dp"
-                    app:strokeWidth="5dp"
-                    android:backgroundTint="#2a9d8f"
                     app:strokeColor="#264653"
-                    android:layout_below="@+id/text"
-                    />
+                    app:strokeWidth="5dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/products"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:text="Products"
-                    android:textSize="30dp"
-                    android:textColor="@color/black"
-                    app:cornerRadius="20dp"
-                    android:fontFamily="@font/muli_black"
-                    android:drawableRight="@drawable/ic_product"
-                    app:strokeWidth="5dp"
+                    android:layout_below="@+id/contacts"
                     android:backgroundTint="#f37121"
-                    app:strokeColor="#c0e218"
+                    android:drawableRight="@drawable/ic_product"
                     android:drawableTint="@color/black"
-                    android:layout_below="@+id/contacts" />
+                    android:fontFamily="@font/muli_black"
+                    android:text="Products"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    app:cornerRadius="20dp"
+                    app:strokeColor="#c0e218"
+                    app:strokeWidth="5dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/invoices"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:text="Invoices"
                     android:layout_below="@id/products"
-                    android:textSize="30dp"
-                    app:cornerRadius="20dp"
-                    android:fontFamily="@font/muli_black"
-                    app:strokeWidth="5dp"
                     android:backgroundTint="#2a9d8f"
-                    app:strokeColor="#264653"
-                    android:textColor="@color/black"
                     android:drawableLeft="@drawable/ic_receipt"
                     android:drawableTint="@color/black"
-                    />
+                    android:fontFamily="@font/muli_black"
+                    android:text="Invoices"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    app:cornerRadius="20dp"
+                    app:strokeColor="#264653"
+                    app:strokeWidth="5dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/payments"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:text="Payments"
-                    android:textSize="30dp"
-                    android:textColor="@color/black"
-                    app:strokeWidth="5dp"
-                    app:cornerRadius="20dp"
+                    android:layout_below="@+id/invoices"
                     android:backgroundTint="#f37121"
-                    app:strokeColor="#c0e218"
                     android:drawableRight="@drawable/ic_payment"
                     android:drawableTint="@color/black"
-                    android:layout_below="@+id/invoices"/>
+                    android:text="Payments"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    app:cornerRadius="20dp"
+                    app:strokeColor="#c0e218"
+                    app:strokeWidth="5dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/expense"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_below="@+id/payments"
-                    android:text="Expenses"
-                    android:textSize="30dp"
-                    android:textColor="@color/black"
-                    app:strokeWidth="5dp"
-                    app:cornerRadius="20dp"
                     android:backgroundTint="#2a9d8f"
-                    app:strokeColor="#264653"
                     android:drawableLeft="@drawable/ic_expense"
-                    android:drawableTint="@color/black"/>
+                    android:drawableTint="@color/black"
+                    android:text="Expenses"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    app:cornerRadius="20dp"
+                    app:strokeColor="#264653"
+                    app:strokeWidth="5dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/reports"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:text="Reports"
-                    android:textSize="30dp"
-                    android:textColor="@color/black"
-                    app:strokeWidth="5dp"
-                    app:cornerRadius="20dp"
+                    android:layout_below="@id/expense"
                     android:backgroundTint="#f37121"
-                    app:strokeColor="#c0e218"
                     android:drawableRight="@drawable/ic_report"
                     android:drawableTint="@color/black"
-                    android:layout_below="@id/expense" />
+                    android:text="Reports"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    app:cornerRadius="20dp"
+                    app:strokeColor="#c0e218"
+                    app:strokeWidth="5dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/trends"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:text="Trends"
-                    android:textSize="30dp"
-                    android:textColor="@color/black"
-                    app:strokeWidth="5dp"
-                    app:cornerRadius="20dp"
+                    android:layout_below="@id/reports"
                     android:backgroundTint="#2a9d8f"
-                    app:strokeColor="#264653"
                     android:drawableLeft="@drawable/ic_trends"
                     android:drawableTint="@color/black"
-                    android:layout_below="@id/reports"/>
+                    android:text="Trends"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    app:cornerRadius="20dp"
+                    app:strokeColor="#264653"
+                    app:strokeWidth="5dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/history"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@id/trends"
+                    android:backgroundTint="#f37121"
+                    android:drawableRight="@drawable/ic_history"
+                    android:drawableTint="@color/black"
+                    android:text="History"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    app:cornerRadius="20dp"
+                    app:strokeColor="#c0e218"
+                    app:strokeWidth="5dp" />
 
             </RelativeLayout>
         </LinearLayout>

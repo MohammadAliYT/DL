@@ -12,13 +12,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.dl.Common.LoginSignup.StartUpScreen;
 import com.example.dl.Databases.SessionManager;
 import com.example.dl.Expenses.ExpenseList;
+import com.example.dl.History.History;
 import com.example.dl.Invoice.InvoiceList;
 import com.example.dl.LocationOwner.Profile;
+import com.example.dl.Payments.PaymentList;
 import com.example.dl.Products.ProductsList;
 import com.example.dl.R;
 import com.example.dl.Contacts.ContactList;
 import com.example.dl.Reports.Reports;
 import com.example.dl.Expenses.ExpenseList;
+import com.example.dl.Trends.Trends;
 
 
 import java.util.HashMap;
@@ -40,6 +43,9 @@ public class UserDashboard extends AppCompatActivity {
         reports = findViewById(R.id.reports);
         expenses = findViewById(R.id.expense);
         invoices = findViewById(R.id.invoices);
+        payments = findViewById(R.id.payments);
+        trends = findViewById(R.id.trends);
+        history = findViewById(R.id.history);
         fullNameUserText = findViewById(R.id.dashboardName);
 
         //Get all the data from Intent
@@ -85,6 +91,30 @@ public class UserDashboard extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserDashboard.this, InvoiceList.class);
+                startActivity(intent);
+            }
+        });
+
+        payments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserDashboard.this, PaymentList.class);
+                startActivity(intent);
+            }
+        });
+
+        trends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserDashboard.this, Trends.class);
+                startActivity(intent);
+            }
+        });
+
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserDashboard.this, History.class);
                 startActivity(intent);
             }
         });
