@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Layout_Borders"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E2D3FB">
+
+        <TextView
+            android:id="@+id/nameOnInvoice"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/muli_semibold"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/detailBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@id/nameOnInvoice"
+            android:backgroundTint="@color/transparent"
+            android:drawableLeft="@drawable/round_add_circle"
+            android:text="Details"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp"
+            app:strokeWidth="2dp"
+            android:elevation="5dp"
+            android:layout_margin="20dp"
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E2D3FB">
+
+        <TextView
+            android:id="@+id/invoiceAmountView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/muli"
+            android:text="Amount"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/invoiceIdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/invoiceAmountView"
+            android:fontFamily="@font/muli"
+            android:text="Invoice Id"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/invoiceDateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/invoiceAmountView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/muli"
+            android:text="Date"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@id/invoiceDateView"
+            android:backgroundTint="@color/transparent"
+            android:drawableLeft="@drawable/round_add_circle"
+            android:text="Edit"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp"
+            app:strokeWidth="2dp"
+            android:elevation="5dp"
+            android:layout_margin="20dp"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Invoice.ViewInvoice">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/invoice_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:onClick="goToInvoiceList"
+            android:padding="5dp"
+            android:src="@drawable/general_back_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@+id/invoice_back_button"
+            android:elevation="6dp"
+            android:fontFamily="@font/muli_black"
+            android:shadowColor="@color/black"
+            android:text="Invoice"
+            android:textColor="@color/black"
+            android:textSize="35dp" />
+
+        <ImageView
+            android:id="@+id/invoiceDeleteBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/deleteicon"
+            app:tint="@color/black" />
+
+        <ImageView
+            android:id="@+id/invoiceEditBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/edit"
+            app:tint="@color/black" />
+
+        <ImageView
+            android:id="@+id/invoicePDFBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/pdf"
+            app:tint="@color/black" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/invoiceNameText"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:fontFamily="@font/muli_black"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/invoiceAmountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/invoiceIdText"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_toRightOf="@+id/invoiceNameText"
+                android:text="Total Amount"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/invoiceDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/invoiceAmountText"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+
+                android:layout_toRightOf="@+id/invoiceNameText"
+                android:text="date"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/invoiceIdText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_toRightOf="@+id/invoiceNameText"
+                android:text="ID"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            style="@style/Layout_Borders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/t1"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_black"
+                android:padding="10dp"
+                android:text="Product Name"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/t2"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/t1"
+                android:fontFamily="@font/muli_black"
+                android:padding="10dp"
+                android:text="Quantity"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/t3"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/t2"
+                android:fontFamily="@font/muli_black"
+                android:padding="10dp"
+                android:text="Price"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/invoiceProductNameText"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/t1"
+                android:fontFamily="@font/muli"
+                android:padding="10dp"
+                android:text="Product Name"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/invoiceQuantityText"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/t2"
+                android:layout_toRightOf="@id/invoiceProductNameText"
+                android:fontFamily="@font/muli"
+                android:padding="10dp"
+                android:text="Quantity"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/invoicePriceText"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/t3"
+                android:layout_toRightOf="@id/invoiceQuantityText"
+                android:fontFamily="@font/muli"
+                android:padding="10dp"
+                android:text="Price"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/invoiceShippingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/muli_semibold"
+        android:padding="10dp"
+        android:text="shipping"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        tools:ignore="RtlCompat" />
+
+    <TextView
+        android:id="@+id/invoiceSubtotalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/muli_semibold"
+        android:padding="10dp"
+        android:text="subtotal"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        tools:ignore="RtlCompat" />
+
+</LinearLayout>

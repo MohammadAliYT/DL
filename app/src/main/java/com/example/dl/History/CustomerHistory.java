@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.dl.HelperClasses.CHHelperClass;
@@ -31,6 +32,9 @@ public class CustomerHistory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_history);
 
+        //Hide StatusBar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         //Hooks
         mFirestoreList = findViewById(R.id.history_customer_recycle_view);
 
@@ -42,7 +46,7 @@ public class CustomerHistory extends AppCompatActivity {
                 .setQuery(query, CHHelperClass.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<CHHelperClass,CHViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<CHHelperClass, CHViewHolder>(options) {
 
             @NonNull
             @Override
@@ -60,7 +64,7 @@ public class CustomerHistory extends AppCompatActivity {
                 holder.qty.setText(model.getQuantity() + "");
                 holder.price.setText(model.getSalePrice() + "Rs.");
                 holder.date.setText(model.getDate());
-                holder.total.setText("Total " +model.getTotal() + " Rs.");
+                holder.total.setText("Total " + model.getTotal() + " Rs.");
 
             }
         };
@@ -89,18 +93,18 @@ public class CustomerHistory extends AppCompatActivity {
     }
 
     private class CHViewHolder extends RecyclerView.ViewHolder {
-    private TextView nameHitory, balance, productName, qty, price, date, total;
+        private TextView nameHitory, balance, productName, qty, price, date, total;
 
-    public CHViewHolder(@NonNull View itemView) {
-        super(itemView);
+        public CHViewHolder(@NonNull View itemView) {
+            super(itemView);
 
-        nameHitory = itemView.findViewById(R.id.nameH);
-        balance = itemView.findViewById(R.id.balanceH);
-        productName = itemView.findViewById(R.id.productNameH);
-        qty = itemView.findViewById(R.id.productQuantityH);
-        price = itemView.findViewById(R.id.productPriceH);
-        date = itemView.findViewById(R.id.productDateH);
-        total = itemView.findViewById(R.id.productTotalH);
+            nameHitory = itemView.findViewById(R.id.nameH);
+            balance = itemView.findViewById(R.id.balanceH);
+            productName = itemView.findViewById(R.id.productNameH);
+            qty = itemView.findViewById(R.id.productQuantityH);
+            price = itemView.findViewById(R.id.productPriceH);
+            date = itemView.findViewById(R.id.productDateH);
+            total = itemView.findViewById(R.id.productTotalH);
+        }
     }
-}
 }

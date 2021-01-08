@@ -173,7 +173,6 @@ public class VerifyOTP extends AppCompatActivity {
 
     }
 
-
     public void goToHomeFromOTP(View view) {
         startActivity(new Intent(getApplicationContext(), StartUpScreen.class));
         finish();

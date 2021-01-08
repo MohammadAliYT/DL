@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Invoice.addInvoice">
+    tools:context=".Invoice.EditInvoice">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_toRightOf="@+id/add_invoice_back_button"
             android:elevation="6dp"
             android:fontFamily="@font/muli_semibold"
-            android:text="New Invoice"
+            android:text="Edit Invoice"
             android:textColor="@color/black"
             android:textSize="30dp" />
     </LinearLayout>
@@ -63,7 +63,7 @@
                     android:textSize="20dp" />
 
                 <Spinner
-                    android:id="@+id/invoiceTypeSpinner"
+                    android:id="@+id/updateInvoiceTypeSpinner"
                     style="@style/SpinnerStyle"
                     android:layout_width="244dp"
                     android:layout_height="30dp"
@@ -90,7 +90,7 @@
                     android:textSize="20dp" />
 
                 <EditText
-                    android:id="@+id/idText"
+                    android:id="@+id/updateIdText"
                     style="@style/Widget.AppCompat.TextView"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
                     android:textSize="20dp" />
 
                 <EditText
-                    android:id="@+id/customerText"
+                    android:id="@+id/updateCustomerText"
                     style="@style/Widget.AppCompat.TextView"
                     android:layout_width="244dp"
                     android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/dateTextInvoice"
+                    android:id="@+id/updateDateTextInvoice"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/invoiceDateText"
@@ -171,9 +171,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="20dp"
-                    android:layout_toRightOf="@id/dateTextInvoice"
+                    android:layout_toRightOf="@id/updateDateTextInvoice"
                     android:backgroundTint="@color/app_logo"
-
                     app:icon="@drawable/ic_baseline_calendar_today_24" />
 
             </RelativeLayout>
@@ -200,10 +199,10 @@
                     android:id="@+id/productAddList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonAdd"
+                    android:id="@+id/updateButtonAdd"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text1"
@@ -234,7 +233,7 @@
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/subtotal"
+                    android:id="@+id/updateSubTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/st"
@@ -255,7 +254,7 @@
                     android:textSize="20dp" />
 
                 <EditText
-                    android:id="@+id/shippingAmount"
+                    android:id="@+id/updateShippingAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/st"
@@ -279,7 +278,7 @@
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/total"
+                    android:id="@+id/updateTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/shipT"
@@ -292,12 +291,12 @@
             </RelativeLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveInvoice"
+                android:id="@+id/updateInvoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:text="Save"
+                android:layout_marginTop="20dp"
+                android:text="Update"
                 android:textColor="@color/black" />
         </LinearLayout>
     </ScrollView>

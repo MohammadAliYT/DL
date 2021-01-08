@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.dl.R;
@@ -21,12 +22,24 @@ public class History extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+        //Hide StatusBar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         customerH = findViewById(R.id.customerHistory);
+        productH = findViewById(R.id.productHistory);
 
         customerH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(History.this, CustomerHistory.class);
+                startActivity(intent);
+            }
+        });
+
+        productH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(History.this, ProductHistory.class);
                 startActivity(intent);
             }
         });

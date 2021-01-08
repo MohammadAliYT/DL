@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".History.CustomerHistory"></activity>
+        <activity android:name=".Invoice.EditInvoice"></activity>
+        <activity android:name=".Invoice.ViewInvoice" />
+        <activity android:name=".History.ProductHistory" />
+        <activity android:name=".History.CustomerHistory" />
         <activity android:name=".History.History" />
         <activity android:name=".Trends.ProductTrend" />
         <activity android:name=".Trends.CustomerTrend" />

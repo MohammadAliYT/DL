@@ -55,6 +55,8 @@ public class ExpenseList extends AppCompatActivity {
                 Intent intent = new Intent(ExpenseList.this, addExpense.class);
                 startActivity(intent);
             }
+
+
         });
     }
     @Override

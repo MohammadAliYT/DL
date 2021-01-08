@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#E2D3FB"
-    tools:context=".History.CustomerHistory">
+    tools:context=".History.ProductHistory">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/black"
-            android:onClick="goToHistoryfromCustomerHistory"
+            android:onClick="goToHistoryFromProductHistory"
             android:padding="10dp"
             android:src="@drawable/general_back_icon"
 
@@ -35,9 +35,9 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/history_customer_recycle_view"
+        android:id="@+id/history_product_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView2"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_below="@+id/textView2" />
 
 </LinearLayout>

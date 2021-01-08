@@ -87,7 +87,6 @@
                     android:id="@+id/contacts"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:layout_below="@+id/text"
                     android:backgroundTint="#2a9d8f"
                     android:drawableLeft="@drawable/ic_person"
                     android:drawableTint="@color/black"

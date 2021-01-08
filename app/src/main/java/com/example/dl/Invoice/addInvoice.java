@@ -8,6 +8,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -51,7 +53,12 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
     ArrayList<String> invoiceSpinnerData;
     TextView dateViewInvoice;
     EditText customer;
-
+    EditText pname,pqty,pprice;
+    ImageView removeBtn;
+    View add_products;
+    TextView subtotal,total;
+    EditText shipping;
+    EditText invoiceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,63 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
         customer = findViewById(R.id.customerText);
         calenderBtnInvoice = findViewById(R.id.calendarBtnInvoice);
         save = findViewById(R.id.saveInvoice);
+        subtotal = findViewById(R.id.subtotal);
+        total = findViewById(R.id.total);
+        shipping = findViewById(R.id.shippingAmount);
+        invoiceId = findViewById(R.id.idText);
+
+
+        //set Total TextView
+        shipping.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //set Total TextView
+                double shippingText = Double.parseDouble(shipping.getText().toString().trim());
+                double subTotalText = Double.parseDouble(subtotal.getText().toString().trim());
+                double totalText = shippingText+subTotalText;
+                total.setText(String.valueOf(totalText));
+            }
+        });
+
+        //Dynamic Layout
+        add_products = getLayoutInflater().inflate(R.layout.row_add_product_in_invoice, null, false);
+
+        //Viewing Dynamic Layout
+        pname = add_products.findViewById(R.id.pname);
+        pqty = add_products.findViewById(R.id.pqty);
+        pprice = add_products.findViewById(R.id.pprice);
+        removeBtn = add_products.findViewById(R.id.premovebtn);
+
+        //Set subtotal textView
+        pprice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                int price = Integer.parseInt(pprice.getText().toString().trim());
+                int qty = Integer.parseInt(pqty.getText().toString().trim());
+                double subTotal = (price*qty);
+                subtotal.setText(String.valueOf(subTotal));
+            }
+        });
 
         //Hide StatusBar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -107,23 +171,51 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
             }
         });
 
-
     }
 
     private void saveInvoices() {
         Map<String, Object> invoiceMap = new HashMap<>();
+        invoiceMap.put("ID",invoiceId.getText().toString().trim());
         invoiceMap.put("invoiceType", invoiceSpinner.getSelectedItem().toString());
         invoiceMap.put("customerName", customer.getText().toString().trim());
         invoiceMap.put("date", dateViewInvoice.getText().toString());
+        invoiceMap.put("productName", pname.getText().toString());
+        invoiceMap.put("productQuantity", pqty.getText().toString());
+        invoiceMap.put("productPrice", pprice.getText().toString());
+        invoiceMap.put("subtotal", subtotal.getText().toString());
+        invoiceMap.put("shippingCharges", shipping.getText().toString());
+        invoiceMap.put("total", total.getText().toString());
 
         FirebaseDatabase.getInstance().getReference().child("Invoice").push()
                 .setValue(invoiceMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        String _ID = invoiceId.getText().toString().trim();
+                        String _Type = invoiceSpinner.getSelectedItem().toString();
+                        String _Name = customer.getText().toString().trim();
+                        String _Date = dateViewInvoice.getText().toString().trim();
+                        String _PName = pname.getText().toString().trim();
+                        String _Qty = pqty.getText().toString().trim();
+                        String _Price = pprice.getText().toString().trim();
+                        String _SubTotal = subtotal.getText().toString().trim();
+                        String _Shipping = shipping.getText().toString().trim();
+                        String _Total = total.getText().toString().trim();
+
                         customer.setText("");
                         Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(getApplicationContext(), InvoiceList.class));
+                        Intent intent = new Intent(getApplicationContext(), InvoiceList.class);
+                        intent.putExtra("ID",_ID);
+                        intent.putExtra("invoiceType",_Type);
+                        intent.putExtra("customerName",_Name);
+                        intent.putExtra("date", _Date);
+                        intent.putExtra("productName", _PName);
+                        intent.putExtra("productQuantity", _Qty);
+                        intent.putExtra("productPrice", _Price);
+                        intent.putExtra("subTotal", _SubTotal);
+                        intent.putExtra("shippingCharges", _Shipping);
+                        intent.putExtra("total",_Total);
+                        startActivity(intent);
                         finish();
                     }
                 })
@@ -162,22 +254,13 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
 
     }
 
-
     private void addView() {
-
-        final View add_products = getLayoutInflater().inflate(R.layout.row_add_product_in_invoice, null, false);
-        EditText pname = add_products.findViewById(R.id.pname);
-        EditText pqty = add_products.findViewById(R.id.pqty);
-        EditText pprice = add_products.findViewById(R.id.pprice);
-        ImageView removeBtn = add_products.findViewById(R.id.premovebtn);
-
         removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 removeView(add_products);
             }
         });
-
         linearLayout.addView(add_products);
     }
 
