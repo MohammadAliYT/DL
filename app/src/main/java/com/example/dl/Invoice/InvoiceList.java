@@ -9,8 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -35,6 +43,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class InvoiceList extends AppCompatActivity {
 
     //Variables
@@ -43,6 +55,7 @@ public class InvoiceList extends AppCompatActivity {
     FirebaseRecyclerOptions<InvoiceHelperClass> options;
     FirebaseRecyclerAdapter<InvoiceHelperClass, invoiceViewHolder> adapter;
     DatabaseReference invoiceRefrence;
+    InvoiceHelperClass model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +130,14 @@ public class InvoiceList extends AppCompatActivity {
                     }
                 });
 
+                //pdf method
+
+                holder.pdf.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    }
+                });
+
             }
 
             @NonNull
@@ -129,11 +150,12 @@ public class InvoiceList extends AppCompatActivity {
 
         adapter.startListening();
         invoiceRecycler.setAdapter(adapter);
+
     }
 
     private class invoiceViewHolder extends RecyclerView.ViewHolder {
         private TextView invoiceName, invoiceDate, invoiceAmount, invoiceID;
-        private Button details, edit;
+        private Button details, edit, pdf;
         private String key;
         View v;
 
@@ -146,7 +168,10 @@ public class InvoiceList extends AppCompatActivity {
             invoiceAmount = itemView.findViewById(R.id.invoiceAmountView);
             invoiceID = itemView.findViewById(R.id.invoiceIdTextView);
             edit = itemView.findViewById(R.id.editBtn);
+            pdf = itemView.findViewById(R.id.pdfBtn);
             v = itemView;
+
         }
     }
+
 }

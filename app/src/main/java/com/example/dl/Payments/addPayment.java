@@ -120,7 +120,7 @@ public class addPayment extends AppCompatActivity {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), albumName);
         if (!file.mkdirs()) {
-            Log.e("SignaturePad", "Directory not created");
+            Log.e("PDF", "Directory not created");
         }
         return file;
     }

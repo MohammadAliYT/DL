@@ -148,6 +148,10 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
         String date_invoice = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
         dateViewInvoice.setText(date_invoice);
 
+        //Date Formats
+        //"dd/MM/yyyy"
+        //"MMM dd, yyyy"
+
         //Open Calendar
         calenderBtnInvoice.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -102,6 +102,24 @@
             android:elevation="5dp"
             android:layout_margin="20dp"
             />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pdfBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@id/editBtn"
+            android:backgroundTint="@color/transparent"
+            android:drawableLeft="@drawable/pdf"
+            android:text="PDF"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp"
+            app:strokeWidth="2dp"
+            android:elevation="5dp"
+            android:layout_margin="20dp"
+            />
     </RelativeLayout>
 
 </LinearLayout>
