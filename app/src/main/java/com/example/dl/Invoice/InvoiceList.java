@@ -1,40 +1,20 @@
 package com.example.dl.Invoice;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.pdf.PdfDocument;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.transition.AutoTransition;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.dl.Databases.ExpenseHelperClass;
 import com.example.dl.Databases.InvoiceHelperClass;
-import com.example.dl.Products.ProductsList;
-import com.example.dl.Products.addProducts;
 import com.example.dl.R;
 import com.example.dl.User.UserDashboard;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -43,10 +23,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 public class InvoiceList extends AppCompatActivity {
 
     //Variables
@@ -54,7 +30,7 @@ public class InvoiceList extends AppCompatActivity {
     RecyclerView invoiceRecycler;
     FirebaseRecyclerOptions<InvoiceHelperClass> options;
     FirebaseRecyclerAdapter<InvoiceHelperClass, invoiceViewHolder> adapter;
-    DatabaseReference invoiceRefrence;
+    DatabaseReference invoiceReference;
     InvoiceHelperClass model;
 
     @Override
@@ -82,7 +58,7 @@ public class InvoiceList extends AppCompatActivity {
         });
 
         //Initializing FB DB
-        invoiceRefrence = FirebaseDatabase.getInstance().getReference().child("Invoice");
+        invoiceReference = FirebaseDatabase.getInstance().getReference().child("Invoice");
 
         LoadData();
     }
@@ -93,7 +69,7 @@ public class InvoiceList extends AppCompatActivity {
     }
 
     private void LoadData() {
-        options = new FirebaseRecyclerOptions.Builder<InvoiceHelperClass>().setQuery(invoiceRefrence, InvoiceHelperClass.class).build();
+        options = new FirebaseRecyclerOptions.Builder<InvoiceHelperClass>().setQuery(invoiceReference, InvoiceHelperClass.class).build();
         adapter = new FirebaseRecyclerAdapter<InvoiceHelperClass, invoiceViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull invoiceViewHolder holder, int position, @NonNull InvoiceHelperClass model) {
@@ -129,15 +105,6 @@ public class InvoiceList extends AppCompatActivity {
                         view.getContext().startActivity(intent);
                     }
                 });
-
-                //pdf method
-
-                holder.pdf.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    }
-                });
-
             }
 
             @NonNull
@@ -155,7 +122,7 @@ public class InvoiceList extends AppCompatActivity {
 
     private class invoiceViewHolder extends RecyclerView.ViewHolder {
         private TextView invoiceName, invoiceDate, invoiceAmount, invoiceID;
-        private Button details, edit, pdf;
+        private Button details, edit;
         private String key;
         View v;
 
@@ -168,7 +135,6 @@ public class InvoiceList extends AppCompatActivity {
             invoiceAmount = itemView.findViewById(R.id.invoiceAmountView);
             invoiceID = itemView.findViewById(R.id.invoiceIdTextView);
             edit = itemView.findViewById(R.id.editBtn);
-            pdf = itemView.findViewById(R.id.pdfBtn);
             v = itemView;
 
         }

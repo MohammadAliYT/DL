@@ -3,6 +3,7 @@ package com.example.dl.Invoice;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
@@ -17,11 +18,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,9 +46,8 @@ import java.io.IOException;
 public class ViewInvoice extends AppCompatActivity {
 
     TextView name, id, total, date, pname, pprice, pqty, shipping, subtotal, type;
-    ImageView delete, edit, pdf;
-    DatabaseReference viewInvoiceRef, deleteRef, editRef, pdfRef;
-    InvoiceHelperClass model;
+    ImageView delete, pdf;
+    DatabaseReference viewInvoiceRef, deleteRef, pdfRef;
     Bitmap bitmap, scaledBitmap;
     int pageWidth = 1200;
 
@@ -57,7 +60,7 @@ public class ViewInvoice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_invoice);
 
-        //verifyStoragePermissions(this);
+        verifyStoragePermissions(this);
 
         //Hide StatusBar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -75,7 +78,6 @@ public class ViewInvoice extends AppCompatActivity {
 
         //Button Hooks
         delete = findViewById(R.id.invoiceDeleteBtn);
-        edit = findViewById(R.id.invoiceEditBtn);
         pdf = findViewById(R.id.invoicePDFBtn);
 
         //Image to View in PDF Invoice
@@ -105,7 +107,7 @@ public class ViewInvoice extends AppCompatActivity {
                     String shippingT = snapshot.child("shippingCharges").getValue().toString();
                     shipping.setText("Shipping Charges \n" + shippingT + " Rs.");
                     String subtotalT = snapshot.child("subtotal").getValue().toString();
-                    subtotal.setText("Sub-Total \n" + subtotalT + " Rs.");
+                    subtotal.setText("\n" + subtotalT + " Rs.");
                     String dateT = snapshot.child("date").getValue().toString();
                     date.setText(dateT);
                 }
@@ -148,22 +150,13 @@ public class ViewInvoice extends AppCompatActivity {
             }
         });
 
-        //Edit Function
-        editRef = FirebaseDatabase.getInstance().getReference().child("Invoice").child(key);
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ViewInvoice.this, EditInvoice.class);
-                startActivity(intent);
-            }
-        });
-
         //PDF Function
         pdfRef = FirebaseDatabase.getInstance().getReference().child("Invoice").child(key);
         pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 makePDF();
+                Toast.makeText(ViewInvoice.this, "Invoice has been converted to PDF Form, Check Internal Storage to view Invoice", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -183,12 +176,12 @@ public class ViewInvoice extends AppCompatActivity {
         PdfDocument.Page invoicePage = invoicePDF.startPage(invoicePageInfo);
 
         Canvas canvas = invoicePage.getCanvas();
-        canvas.drawBitmap(scaledBitmap, 10, 0, paint);
+        canvas.drawBitmap(scaledBitmap, 500, 30, paint);
 
         title.setTextAlign(Paint.Align.CENTER);
         title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         title.setTextSize(100);
-        canvas.drawText("Invoice", pageWidth / 2, 270, title);
+        canvas.drawText("Invoice", pageWidth / 2, 330, title);
 
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTextSize(40f);
@@ -200,8 +193,8 @@ public class ViewInvoice extends AppCompatActivity {
         paint.setTextSize(25f);
         paint.setColor(Color.BLACK);
         canvas.drawText("Invoice Type: Credit Bill", pageWidth - 20, 590, paint);
-        canvas.drawText("Invoice ID: " + id.getText(), 20, 590, paint);
-        canvas.drawText("Date: " + date.getText(), 20, 640, paint);
+        canvas.drawText("Invoice : " + id.getText(), pageWidth - 20, 640, paint);
+        canvas.drawText("Date: " + date.getText(), pageWidth - 20, 690, paint);
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(2);
@@ -220,20 +213,18 @@ public class ViewInvoice extends AppCompatActivity {
         canvas.drawLine(880, 790, 880, 840, paint);
         canvas.drawLine(1030, 790, 1030, 840, paint);
 
-
-//        int qtyPDF = Integer.parseInt(pqty.getText());
-//        int pricePDF = Integer.parseInt(model.getProductPrice());
-//        int totalPDF = (qtyPDF * pricePDF);
+//        int qty = Integer.parseInt();
+//        int price = Integer.parseInt();
 
         canvas.drawText("1. ", 40, 950, paint);
         canvas.drawText(String.valueOf(pname.getText()), 200, 950, paint);
         canvas.drawText(String.valueOf(pprice.getText()), 700, 950, paint);
         canvas.drawText(String.valueOf(pqty.getText()), 900, 950, paint);
-        canvas.drawText(String.valueOf(subtotal.getText()), pageWidth - 40, 950, paint);
+        canvas.drawText(String.valueOf(subtotal.getText()), 1000, 950, paint);
 
         canvas.drawLine(680, 1200, pageWidth - 20, 1200, paint);
-        canvas.drawText("Sub-Total: " + subtotal.getText(), 700, 1250, paint);
-        canvas.drawText("Shipping: " + shipping.getText(), 700, 1250, paint);
+        canvas.drawText("Sub Total:" + subtotal.getText(), 700, 1250, paint);
+        canvas.drawText("" + shipping.getText(), 700, 1300, paint);
 
         paint.setColor(Color.rgb(102, 255, 102));
         canvas.drawRect(680, 1350, pageWidth - 20, 1450, paint);
@@ -241,14 +232,14 @@ public class ViewInvoice extends AppCompatActivity {
         paint.setColor(Color.BLACK);
         paint.setTextSize(50f);
         paint.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("Total: " + total.getText(), 700, 1417, paint);
+        canvas.drawText("" + total.getText(), 700, 1417, paint);
 
         invoicePDF.finishPage(invoicePage);
         String myFilePath = Environment.getExternalStorageDirectory().getPath() + "/Doc.pdf";
-        //File photo = new File(getAlbumStorageDir("PDF"), String.format("PDF_%d.pdf", System.currentTimeMillis()));
-        File myFile = new File(myFilePath);
+        File photo = new File(getAlbumStorageDir("DigiLedger PDF"), String.format("Invoice_%d.pdf", System.currentTimeMillis()));
+        //File myFile = new File(myFilePath);
         try {
-            invoicePDF.writeTo(new FileOutputStream(myFile));
+            invoicePDF.writeTo(new FileOutputStream(photo));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -256,43 +247,43 @@ public class ViewInvoice extends AppCompatActivity {
         invoicePDF.close();
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-//        switch (requestCode) {
-//            case REQUEST_EXTERNAL_STORAGE: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length <= 0
-//                        || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(ViewInvoice.this, "Cannot write images to external storage", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
-//
-//    public File getAlbumStorageDir(String albumName) {
-//        // Get the directory for the user's public pictures directory.
-//        File file = new File(Environment.getExternalStorageDirectory(), albumName);
-//        if (!file.mkdirs()) {
-//            Log.e("PDF", "Directory not created");
-//        }
-//        if (file.mkdirs()) {
-//            Log.e("PDF", "Directory created");
-//        }
-//        return file;
-//    }
-//
-//    public static void verifyStoragePermissions(Activity activity) {
-//        // Check if we have write permission
-//        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//
-//        if (permission != PackageManager.PERMISSION_GRANTED) {
-//            // We don't have permission so prompt the user
-//            ActivityCompat.requestPermissions(
-//                    activity,
-//                    PERMISSIONS_STORAGE,
-//                    REQUEST_EXTERNAL_STORAGE
-//            );
-//        }
-//    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length <= 0
+                        || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(ViewInvoice.this, "Cannot write PDF to external storage", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    public File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStorageDirectory(), albumName);
+        if (!file.mkdirs()) {
+            Log.e("DigiLedger PDF", "Directory not created");
+        }
+        if (file.mkdirs()) {
+            Log.e("DigiLedger PDF", "Directory created");
+        }
+        return file;
+    }
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
 }

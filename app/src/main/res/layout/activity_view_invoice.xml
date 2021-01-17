@@ -48,15 +48,6 @@
             app:tint="@color/black" />
 
         <ImageView
-            android:id="@+id/invoiceEditBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/edit"
-            app:tint="@color/black" />
-
-        <ImageView
             android:id="@+id/invoicePDFBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -238,5 +229,4 @@
         android:textColor="@color/black"
         android:textSize="20dp"
         tools:ignore="RtlCompat" />
-
 </LinearLayout>
