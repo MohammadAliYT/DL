@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="50dp"
-            android:hint="Customer Name"
+            android:hint="Invoice ID"
             android:padding="10dp"
             app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black">
@@ -75,6 +75,7 @@
             android:gravity="center">
 
             <EditText
+                android:id="@+id/amountP"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

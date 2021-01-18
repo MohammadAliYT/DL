@@ -33,7 +33,7 @@ public class ContactList extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         fabAddContacts = findViewById(R.id.addContact);
-        recview=(RecyclerView)findViewById(R.id.contact_recycle_view);
+        recview = (RecyclerView) findViewById(R.id.contact_recycle_view);
         recview.setLayoutManager(new LinearLayoutManager(this));
 
         FirebaseRecyclerOptions<ContactHelperClass> options =
@@ -41,7 +41,7 @@ public class ContactList extends AppCompatActivity {
                         .setQuery(FirebaseDatabase.getInstance().getReference().child("Contacts"), ContactHelperClass.class)
                         .build();
 
-        adapter= new ContactAdapter(options);
+        adapter = new ContactAdapter(options);
         recview.setAdapter(adapter);
 
         fabAddContacts.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +69,4 @@ public class ContactList extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), UserDashboard.class));
         finish();
     }
-
-
 }

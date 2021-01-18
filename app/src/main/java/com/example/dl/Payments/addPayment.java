@@ -3,10 +3,12 @@ package com.example.dl.Payments;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,30 +21,50 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dl.Contacts.ContactList;
 import com.example.dl.Expenses.ExpenseList;
+import com.example.dl.HelperClasses.DatePickerFragment;
 import com.example.dl.History.History;
 import com.example.dl.R;
 import com.example.dl.User.UserDashboard;
 import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
-public class addPayment extends AppCompatActivity {
+public class addPayment extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     //Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     //Variables
     private SignaturePad mSignaturePad;
     private Button mClearButton;
     private Button mSaveButton;
+    //Layout Buttons
+    Button calendarBtn;
+    TextView date, amount;
+    TextInputLayout invoiceId;
 
 
     @Override
@@ -53,11 +75,31 @@ public class addPayment extends AppCompatActivity {
         //Hide StatusBar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        mSignaturePad = (SignaturePad) findViewById(R.id.signature_pad);
+        //Hooks
+        calendarBtn = findViewById(R.id.calendarButton);
+        date = findViewById(R.id.dateTextViewPayments);
+        amount = findViewById(R.id.amountP);
+        mSignaturePad = findViewById(R.id.signature_pad);
+        invoiceId = findViewById(R.id.payments_customer_name);
+
+        //Action For Calendar Button
+        calendarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "Date Picker");
+            }
+        });
+
+
+        //Date
+        String date_invoice = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
+        date.setText(date_invoice);
+
         mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
-                Toast.makeText(addPayment.this, "OnStartSigning", Toast.LENGTH_SHORT).show();
+                Toast.makeText(addPayment.this, "Add Signature", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -73,8 +115,8 @@ public class addPayment extends AppCompatActivity {
             }
         });
 
-        mClearButton = (Button) findViewById(R.id.clearSignature);
-        mSaveButton = (Button) findViewById(R.id.saveSignature);
+        mClearButton = findViewById(R.id.clearSignature);
+        mSaveButton = findViewById(R.id.saveSignature);
 
         mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +131,7 @@ public class addPayment extends AppCompatActivity {
                 Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
                 if (addJpgSignatureToGallery(signatureBitmap)) {
                     Toast.makeText(addPayment.this, "Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
+                    savePayments();
                 } else {
                     Toast.makeText(addPayment.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
                 }
@@ -190,5 +233,43 @@ public class addPayment extends AppCompatActivity {
     public void goToPaymentList(View view) {
         Intent intent = new Intent(addPayment.this, PaymentList.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+
+        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        TextView textView = findViewById(R.id.dateTextViewPayments);
+        textView.setText(currentDateString);
+
+    }
+
+    private void savePayments() {
+        Map<String, Object> paymentMap = new HashMap<>();
+        paymentMap.put("invoiceID", invoiceId.getEditText().getText().toString());
+        paymentMap.put("amount", amount.getText().toString().trim());
+        paymentMap.put("date", date.getText().toString().trim());
+
+        FirebaseDatabase.getInstance().getReference().child("Payments").push()
+                .setValue(paymentMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(),"Inserted Successfully",Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getApplicationContext(), PaymentList.class));
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e)
+                    {
+                        Toast.makeText(getApplicationContext(),"Could not insert",Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
