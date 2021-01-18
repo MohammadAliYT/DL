@@ -29,7 +29,7 @@ import java.util.Map;
 public class addProducts extends AppCompatActivity {
 
     //Variables
-    TextInputLayout name, category, price, stock,uomText;
+    TextInputLayout name, category, price, stock, uomText;
     Button save;
 
     @Override
@@ -60,6 +60,9 @@ public class addProducts extends AppCompatActivity {
 
     private void processinsert() {
 
+        if (!validateName() | !validateCategory() | !validatePrice() | !validateStock() | !validateUOM()) {
+            return;
+        }
         Map<String, Object> productMap = new HashMap<>();
         productMap.put("name", name.getEditText().getText().toString());
         productMap.put("category", category.getEditText().getText().toString());
@@ -94,6 +97,71 @@ public class addProducts extends AppCompatActivity {
     public void goToProductList(View view) {
         startActivity(new Intent(getApplicationContext(), ProductsList.class));
         finish();
+    }
+
+    private boolean validateName() {
+        String val = name.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            name.setError("Field can not be empty");
+            return false;
+        } else {
+            name.setError(null);
+            name.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateCategory() {
+        String val = category.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            category.setError("Field can not be empty");
+            return false;
+        } else {
+            category.setError(null);
+            category.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validatePrice() {
+        String val = price.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            price.setError("Field can not be empty");
+            return false;
+        } else {
+            price.setError(null);
+            price.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateStock() {
+        String val = stock.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            stock.setError("Field can not be empty");
+            return false;
+        } else {
+            stock.setError(null);
+            stock.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateUOM() {
+        String val = uomText.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            uomText.setError("Field can not be empty");
+            return false;
+        } else {
+            uomText.setError(null);
+            uomText.setErrorEnabled(false);
+            return true;
+        }
     }
 
 }

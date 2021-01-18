@@ -22,20 +22,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dl.Contacts.ContactList;
-import com.example.dl.Expenses.ExpenseList;
 import com.example.dl.HelperClasses.DatePickerFragment;
-import com.example.dl.History.History;
+import com.example.dl.Invoice.InvoiceList;
 import com.example.dl.R;
 import com.example.dl.User.UserDashboard;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
@@ -51,26 +49,30 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class addPayment extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class EditPayment extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    //Variables
+    private SignaturePad editSignaturePad;
+    private Button editClearButton;
+    private Button editSaveButton;
+    //Layout Buttons
+    Button editcalendarBtn;
+    TextView editdate, editamount;
+    TextInputLayout editinvoiceId;
+
+    //Intent Data
+    String id, amount, date;
 
     //Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    //Variables
-    private SignaturePad mSignaturePad;
-    private Button mClearButton;
-    private Button mSaveButton;
-    //Layout Buttons
-    Button calendarBtn;
-    TextView date, amount;
-    TextInputLayout invoiceId;
-
+    //FB Database Initializing
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_payment);
+        setContentView(R.layout.activity_edit_payment);
 
         verifyStoragePermissions(this);
 
@@ -78,14 +80,24 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //Hooks
-        calendarBtn = findViewById(R.id.calendarButton);
-        date = findViewById(R.id.dateTextViewPayments);
-        amount = findViewById(R.id.amountP);
-        mSignaturePad = findViewById(R.id.signature_pad);
-        invoiceId = findViewById(R.id.payments_customer_name);
+        editcalendarBtn = findViewById(R.id.edit_calendarButton);
+        editdate = findViewById(R.id.edit_dateTextViewPayments);
+        editamount = findViewById(R.id.edit_amountP);
+        editinvoiceId = findViewById(R.id.edit_payments_customer_name);
+        editSignaturePad = findViewById(R.id.edit_signature_pad);
+
+        //Passing Data Via Intent
+        Intent intent = getIntent();
+        id = intent.getStringExtra("invoiceID");
+        amount = intent.getStringExtra("amount");
+        date = intent.getStringExtra("date");
+
+        editinvoiceId.getEditText().setText(id);
+        editamount.setText(amount);
+        editdate.setText(date);
 
         //Action For Calendar Button
-        calendarBtn.setOnClickListener(new View.OnClickListener() {
+        editcalendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment datePicker = new DatePickerFragment();
@@ -93,57 +105,87 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
             }
         });
 
-
         //Date
-        String date_invoice = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
-        date.setText(date_invoice);
+        String date_edit = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
+        editdate.setText(date_edit);
 
-        mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
+        editSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
-                Toast.makeText(addPayment.this, "Add Signature", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPayment.this, "Add Signature", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSigned() {
-                mSaveButton.setEnabled(true);
-                mClearButton.setEnabled(true);
+                editSaveButton.setEnabled(true);
+                editClearButton.setEnabled(true);
             }
 
             @Override
             public void onClear() {
-                mSaveButton.setEnabled(false);
-                mClearButton.setEnabled(false);
+                editSaveButton.setEnabled(false);
+                editClearButton.setEnabled(false);
             }
         });
 
-        mClearButton = findViewById(R.id.clearSignature);
-        mSaveButton = findViewById(R.id.saveSignature);
+        editClearButton = findViewById(R.id.clearSignature);
+        editSaveButton = findViewById(R.id.updatePayment);
 
-        mClearButton.setOnClickListener(new View.OnClickListener() {
+        editClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSignaturePad.clear();
+                editSignaturePad.clear();
             }
         });
 
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
+        editSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
+                Bitmap signatureBitmap = editSignaturePad.getSignatureBitmap();
                 if (addJpgSignatureToGallery(signatureBitmap)) {
-                    Toast.makeText(addPayment.this, "Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
-                    savePayments();
+                    Toast.makeText(EditPayment.this, "Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
+                    updateData();
                 } else {
-                    Toast.makeText(addPayment.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPayment.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
                 }
-                if (addSvgSignatureToGallery(mSignaturePad.getSignatureSvg())) {
-                    Toast.makeText(addPayment.this, "SVG Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
+                if (addSvgSignatureToGallery(editSignaturePad.getSignatureSvg())) {
+                    Toast.makeText(EditPayment.this, "SVG Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(addPayment.this, "Unable to store the SVG signature", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPayment.this, "Unable to store the SVG signature", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+    }
+
+    public void updateData(){
+        Map<String, Object> updateData = new HashMap<>();
+        updateData.put("invoiceID",editinvoiceId.getEditText().getText().toString());
+        updateData.put("amount",editamount.getText().toString());
+        updateData.put("date",editdate.getText().toString());
+
+        //Initialize FB Db
+        reference = FirebaseDatabase.getInstance().getReference().child("Payments");
+        String key = getIntent().getStringExtra("key");
+
+        FirebaseDatabase.getInstance().getReference().child("Payments")
+                .child(key).updateChildren(updateData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(EditPayment.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), PaymentList.class));
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(EditPayment.this, "Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
     }
 
     @Override
@@ -154,7 +196,7 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length <= 0
                         || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(addPayment.this, "Cannot write images to external storage", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPayment.this, "Cannot write images to external storage", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -183,7 +225,7 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
     public boolean addJpgSignatureToGallery(Bitmap signature) {
         boolean result = false;
         try {
-            File photo = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
+            File photo = new File(getAlbumStorageDir("SignaturePadEdits"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
             saveBitmapToJPG(signature, photo);
             scanMediaFile(photo);
             result = true;
@@ -197,13 +239,13 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(photo);
         mediaScanIntent.setData(contentUri);
-        addPayment.this.sendBroadcast(mediaScanIntent);
+        EditPayment.this.sendBroadcast(mediaScanIntent);
     }
 
     public boolean addSvgSignatureToGallery(String signatureSvg) {
         boolean result = false;
         try {
-            @SuppressLint("DefaultLocale") File svgFile = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.svg", System.currentTimeMillis()));
+            @SuppressLint("DefaultLocale") File svgFile = new File(getAlbumStorageDir("SignaturePadEdit"), String.format("Signature_%d.svg", System.currentTimeMillis()));
             OutputStream stream = new FileOutputStream(svgFile);
             OutputStreamWriter writer = new OutputStreamWriter(stream);
             writer.write(signatureSvg);
@@ -232,11 +274,6 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
-    public void goToPaymentList(View view) {
-        Intent intent = new Intent(addPayment.this, PaymentList.class);
-        startActivity(intent);
-    }
-
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Calendar c = Calendar.getInstance();
@@ -245,33 +282,14 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
         c.set(Calendar.DAY_OF_MONTH, day);
 
         String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-        TextView textView = findViewById(R.id.dateTextViewPayments);
-        textView.setText(currentDateString);
+        TextView dateText = findViewById(R.id.edit_dateTextViewPayments);
+        dateText.setText(currentDateString);
 
     }
 
-    private void savePayments() {
-        Map<String, Object> paymentMap = new HashMap<>();
-        paymentMap.put("invoiceID", invoiceId.getEditText().getText().toString());
-        paymentMap.put("amount", amount.getText().toString().trim());
-        paymentMap.put("date", date.getText().toString().trim());
-
-        FirebaseDatabase.getInstance().getReference().child("Payments").push()
-                .setValue(paymentMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Inserted Successfully",Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(getApplicationContext(), PaymentList.class));
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
-                        Toast.makeText(getApplicationContext(),"Could not insert",Toast.LENGTH_LONG).show();
-                    }
-                });
+    public void goToPaymentList(View view) {
+        startActivity(new Intent(getApplicationContext(), PaymentList.class));
+        finish();
     }
+
 }

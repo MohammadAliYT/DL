@@ -7,33 +7,33 @@
     android:layout_margin="5dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#E2D3FB">
 
         <TextView
-            android:id="@+id/nameOnInvoice"
+            android:id="@+id/idofInvoice"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/muli_semibold"
-            android:text="Name"
+            android:fontFamily="@font/muli_black"
+            android:text="Invoice ID"
             android:textColor="@color/black"
-            android:textSize="20dp" />
+            android:textSize="30dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/detailBtn"
+            android:id="@+id/deleteBtnPayment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:layout_toRightOf="@id/nameOnInvoice"
             android:backgroundTint="@color/transparent"
-            android:drawableLeft="@drawable/round_add_circle"
-            android:text="Details"
+            android:drawableLeft="@drawable/delete_24"
+            android:layout_toRightOf="@+id/idofInvoice"
+            android:text="Delete"
             android:textColor="@color/black"
             app:cornerRadius="10dp"
             app:strokeWidth="2dp"
@@ -41,7 +41,26 @@
             android:layout_margin="20dp"
             />
 
-    </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editBtnPayment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/deleteBtnPayment"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toRightOf="@+id/idofInvoice"
+            android:backgroundTint="@color/transparent"
+            android:drawableLeft="@drawable/edit"
+            android:elevation="0dp"
+            android:text="Edit"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp"
+            app:strokeWidth="2dp" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -49,7 +68,7 @@
         android:background="#E2D3FB">
 
         <TextView
-            android:id="@+id/invoiceAmountView"
+            android:id="@+id/paymentAmountView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -60,23 +79,10 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/invoiceIdTextView"
+            android:id="@+id/paymentDateView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="130dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_toRightOf="@+id/invoiceAmountView"
-            android:fontFamily="@font/muli"
-            android:text="Invoice Id"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/invoiceDateView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/invoiceAmountView"
+            android:layout_below="@+id/paymentAmountView"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
@@ -84,24 +90,6 @@
             android:text="Date"
             android:textColor="@color/black"
             android:textSize="20dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/editBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_below="@id/invoiceDateView"
-            android:backgroundTint="@color/transparent"
-            android:drawableLeft="@drawable/edit"
-            android:text="Edit"
-            android:textColor="@color/black"
-            app:cornerRadius="10dp"
-            app:strokeWidth="2dp"
-            android:elevation="0dp"
-            android:layout_margin="20dp"
-            />
 
     </RelativeLayout>
 

@@ -95,7 +95,6 @@ public class InvoiceList extends AppCompatActivity {
                         intent.putExtra("ID", model.getID());
                         intent.putExtra("customerName", model.getCustomerName());
                         intent.putExtra("date", model.getDate());
-//                      intent.putExtra("invoiceType", model.getInvoiceType());
                         intent.putExtra("productName", model.getProductName());
                         intent.putExtra("productPrice", model.getProductPrice());
                         intent.putExtra("productQuantity", model.getProductQuantity());
@@ -123,7 +122,6 @@ public class InvoiceList extends AppCompatActivity {
     private class invoiceViewHolder extends RecyclerView.ViewHolder {
         private TextView invoiceName, invoiceDate, invoiceAmount, invoiceID;
         private Button details, edit;
-        private String key;
         View v;
 
         public invoiceViewHolder(@NonNull View itemView) {

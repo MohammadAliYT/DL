@@ -50,13 +50,16 @@ public class addContacts extends AppCompatActivity {
         });
     }
 
-    private void processinsert()
-    {
-        Map<String,Object> map=new HashMap<>();
-        map.put("name",name.getEditText().getText().toString());
-        map.put("address",address.getEditText().getText().toString());
-        map.put("phone",phone.getEditText().getText().toString());
-        map.put("balance",balance.getEditText().getText().toString());
+    private void processinsert() {
+
+        if (!validateName() | !validateAddress() | !validatePhone() | !validateBalance()) {
+            return;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", name.getEditText().getText().toString());
+        map.put("address", address.getEditText().getText().toString());
+        map.put("phone", phone.getEditText().getText().toString());
+        map.put("balance", balance.getEditText().getText().toString());
         FirebaseDatabase.getInstance().getReference().child("Contacts").push()
                 .setValue(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -66,16 +69,15 @@ public class addContacts extends AppCompatActivity {
                         address.getEditText().setText("");
                         phone.getEditText().setText("");
                         balance.getEditText().setText("");
-                        Toast.makeText(getApplicationContext(),"Inserted Successfully",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(getApplicationContext(), ContactList.class));
                         finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
-                        Toast.makeText(getApplicationContext(),"Could not insert",Toast.LENGTH_LONG).show();
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Could not insert", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -85,4 +87,54 @@ public class addContacts extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), ContactList.class));
         finish();
     }
+
+    private boolean validateName() {
+        String val = name.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            name.setError("Field can not be empty");
+            return false;
+        } else {
+            name.setError(null);
+            name.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validateAddress() {
+        String val = address.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            address.setError("Field can not be empty");
+            return false;
+        } else {
+            address.setError(null);
+            address.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validatePhone() {
+        String val = phone.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            phone.setError("Field can not be empty");
+            return false;
+        } else {
+            phone.setError(null);
+            phone.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validateBalance() {
+        String val = balance.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            balance.setError("Field can not be empty");
+            return false;
+        } else {
+            balance.setError(null);
+            balance.setErrorEnabled(false);
+            return true;
+        }
+    }
+
 }

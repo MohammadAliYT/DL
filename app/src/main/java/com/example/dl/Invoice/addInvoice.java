@@ -53,10 +53,10 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
     ArrayList<String> invoiceSpinnerData;
     TextView dateViewInvoice;
     EditText customer;
-    EditText pname,pqty,pprice;
+    EditText pname, pqty, pprice;
     ImageView removeBtn;
     View add_products;
-    TextView subtotal,total;
+    TextView subtotal, total;
     EditText shipping;
     EditText invoiceId;
 
@@ -96,7 +96,7 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
                 //set Total TextView
                 double shippingText = Double.parseDouble(shipping.getText().toString().trim());
                 double subTotalText = Double.parseDouble(subtotal.getText().toString().trim());
-                double totalText = shippingText+subTotalText;
+                double totalText = shippingText + subTotalText;
                 total.setText(String.valueOf(totalText));
             }
         });
@@ -126,7 +126,7 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
             public void afterTextChanged(Editable editable) {
                 int price = Integer.parseInt(pprice.getText().toString().trim());
                 int qty = Integer.parseInt(pqty.getText().toString().trim());
-                double subTotal = (price*qty);
+                double subTotal = (price * qty);
                 subtotal.setText(String.valueOf(subTotal));
             }
         });
@@ -167,7 +167,7 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
                 addView();
             }
         });
-        
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,8 +178,12 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
     }
 
     private void saveInvoices() {
+        if (!validateCustomerName() | !validateInvoiceType() | !validateProduct() |
+                !validateProductPrice() | !validateProductQuantity() | !validateShipping()) {
+            return;
+        }
         Map<String, Object> invoiceMap = new HashMap<>();
-        invoiceMap.put("ID",invoiceId.getText().toString().trim());
+        invoiceMap.put("ID", invoiceId.getText().toString().trim());
         invoiceMap.put("invoiceType", invoiceSpinner.getSelectedItem().toString());
         invoiceMap.put("customerName", customer.getText().toString().trim());
         invoiceMap.put("date", dateViewInvoice.getText().toString());
@@ -209,16 +213,16 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
                         customer.setText("");
                         Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), InvoiceList.class);
-                        intent.putExtra("ID",_ID);
-                        intent.putExtra("invoiceType",_Type);
-                        intent.putExtra("customerName",_Name);
+                        intent.putExtra("ID", _ID);
+                        intent.putExtra("invoiceType", _Type);
+                        intent.putExtra("customerName", _Name);
                         intent.putExtra("date", _Date);
                         intent.putExtra("productName", _PName);
                         intent.putExtra("productQuantity", _Qty);
                         intent.putExtra("productPrice", _Price);
                         intent.putExtra("subTotal", _SubTotal);
                         intent.putExtra("shippingCharges", _Shipping);
-                        intent.putExtra("total",_Total);
+                        intent.putExtra("total", _Total);
                         startActivity(intent);
                         finish();
                     }
@@ -275,5 +279,77 @@ public class addInvoice extends AppCompatActivity implements AdapterView.OnItemS
     public void goToInvoiceList(View view) {
         startActivity(new Intent(getApplicationContext(), InvoiceList.class));
         finish();
+    }
+
+    private boolean validateInvoiceType() {
+        String val = invoiceId.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            invoiceId.setError("Field can not be empty");
+            return false;
+        } else {
+            invoiceId.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateCustomerName() {
+        String val = customer.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            customer.setError("Field can not be empty");
+            return false;
+        } else {
+            customer.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateProduct() {
+        String val = pname.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            pname.setError("Field can not be empty");
+            return false;
+        } else {
+            pname.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateProductQuantity() {
+        String val = pqty.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            pqty.setError("Field can not be empty");
+            return false;
+        } else {
+            pqty.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateProductPrice() {
+        String val = pprice.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            pprice.setError("Field can not be empty");
+            return false;
+        } else {
+            pprice.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateShipping() {
+        String val = shipping.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            shipping.setError("Field can not be empty");
+            return false;
+        } else {
+            shipping.setError(null);
+            return true;
+        }
     }
 }

@@ -5,19 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
-import com.example.dl.Contacts.ContactList;
-import com.example.dl.Contacts.addContacts;
-import com.example.dl.Databases.ContactHelperClass;
-import com.example.dl.Databases.InvoiceHelperClass;
 import com.example.dl.Databases.PaymentHelperClass;
-import com.example.dl.Expenses.ExpenseList;
-import com.example.dl.HelperClasses.ContactAdapter;
-import com.example.dl.HelperClasses.PaymentAdapter;
 import com.example.dl.Invoice.InvoiceList;
 import com.example.dl.R;
 import com.example.dl.User.UserDashboard;
@@ -35,7 +34,7 @@ public class PaymentList extends AppCompatActivity {
     RecyclerView paymentRecycler;
     FirebaseRecyclerOptions<PaymentHelperClass> options;
     FirebaseRecyclerAdapter<PaymentHelperClass, PaymentList.paymentViewHolder> adapter;
-    DatabaseReference invoiceReference;
+    DatabaseReference paymentReference,paymentDeleteReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,28 +60,92 @@ public class PaymentList extends AppCompatActivity {
 
         //Hide StatusBar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //Initializing FB DB
+        paymentReference = FirebaseDatabase.getInstance().getReference().child("Payments");
+
+        LoadPaymentData();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void LoadPaymentData() {
+        options = new FirebaseRecyclerOptions.Builder<PaymentHelperClass>().setQuery(paymentReference, PaymentHelperClass.class).build();
+        adapter = new FirebaseRecyclerAdapter<PaymentHelperClass, paymentViewHolder>(options) {
+            @NonNull
+            @Override
+            public paymentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_payment_list, parent, false);
+                return new paymentViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull paymentViewHolder holder, int position, @NonNull PaymentHelperClass model) {
+                holder.id.setText("Invoice ID:\n" + model.getInvoiceID());
+                holder.amount.setText("Rs: " + model.getAmount());
+                holder.date.setText("Date:" + model.getDate());
+
+                //Edit Button Action
+                holder.edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(view.getContext(),EditPayment.class);
+                        intent.putExtra("key", getRef(position).getKey());
+                        intent.putExtra("invoiceID", model.getInvoiceID());
+                        intent.putExtra("amount", model.getAmount());
+                        intent.putExtra("date", model.getDate());
+                        view.getContext().startActivity(intent);
+                    }
+                });
+
+                //Delete Button Action
+                holder.delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PaymentList.this);
+                        builder.setTitle("Delete Payment");
+                        builder.setMessage("Delete...?");
+
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                FirebaseDatabase.getInstance().getReference().child("Payments")
+                                        .child(getRef(position).getKey()).removeValue();
+                            }
+                        });
+
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+
+                        builder.show();
+                    }
+                });
+            }
+        };
+
         adapter.startListening();
+        paymentRecycler.setAdapter(adapter);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
 
     public void goToHomePage(View view) {
         startActivity(new Intent(getApplicationContext(), UserDashboard.class));
         finish();
     }
 
-    public class paymentViewHolder extends RecyclerView.ViewHolder {
+    private class paymentViewHolder extends RecyclerView.ViewHolder {
+        TextView date, amount, id;
+        Button edit, delete;
+
         public paymentViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            date = itemView.findViewById(R.id.paymentDateView);
+            amount = itemView.findViewById(R.id.paymentAmountView);
+            id = itemView.findViewById(R.id.idofInvoice);
+            edit = itemView.findViewById(R.id.editBtnPayment);
+            delete = itemView.findViewById(R.id.deleteBtnPayment);
         }
     }
 }

@@ -78,6 +78,11 @@ public class addExpense extends AppCompatActivity implements DatePickerDialog.On
     }
 
     private void saveExpense() {
+
+        if (!validateTitle() | !validateAmount() | !validateDesc()) {
+            return;
+        }
+
         Map<String, Object> expenseMap = new HashMap<>();
         expenseMap.put("title",title.getEditText().getText().toString());
         expenseMap.put("amount",amount.getEditText().getText().toString());
@@ -102,6 +107,43 @@ public class addExpense extends AppCompatActivity implements DatePickerDialog.On
                         Toast.makeText(getApplicationContext(), "Could not insert", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private boolean validateTitle(){
+        String val = title.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            title.setError("Field can not be empty");
+            return false;
+        } else {
+            title.setError(null);
+            title.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateAmount(){
+        String val = amount.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            amount.setError("Field can not be empty");
+            return false;
+        } else {
+            amount.setError(null);
+            amount.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validateDesc(){
+        String val = desc.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            desc.setError("Field can not be empty");
+            return false;
+        } else {
+            desc.setError("Add Description");
+            return true;
+        }
     }
 
     public void goToExpenseList(View view) {
