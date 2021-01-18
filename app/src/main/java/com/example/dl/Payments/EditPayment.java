@@ -292,4 +292,29 @@ public class EditPayment extends AppCompatActivity implements DatePickerDialog.O
         finish();
     }
 
+    private boolean validateInvoiceID() {
+        String val = editinvoiceId.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            editinvoiceId.setError("Field can not be empty");
+            return false;
+        } else {
+            editinvoiceId.setError(null);
+            editinvoiceId.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateAmount() {
+        String val = editamount.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            editamount.setError("Field can not be empty");
+            return false;
+        } else {
+            editamount.setError(null);
+            return true;
+        }
+    }
+
 }

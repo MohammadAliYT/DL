@@ -92,6 +92,7 @@ public class InvoiceList extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(view.getContext(), EditInvoice.class);
+                        intent.putExtra("key", getRef(position).getKey());
                         intent.putExtra("ID", model.getID());
                         intent.putExtra("customerName", model.getCustomerName());
                         intent.putExtra("date", model.getDate());

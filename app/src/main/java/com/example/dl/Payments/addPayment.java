@@ -251,6 +251,9 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
     }
 
     private void savePayments() {
+        if (!validateInvoiceID() | !validateAmount()) {
+            return;
+        }
         Map<String, Object> paymentMap = new HashMap<>();
         paymentMap.put("invoiceID", invoiceId.getEditText().getText().toString());
         paymentMap.put("amount", amount.getText().toString().trim());
@@ -261,17 +264,42 @@ public class addPayment extends AppCompatActivity implements DatePickerDialog.On
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Inserted Successfully",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(getApplicationContext(), PaymentList.class));
                         finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
-                        Toast.makeText(getApplicationContext(),"Could not insert",Toast.LENGTH_LONG).show();
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Could not insert", Toast.LENGTH_LONG).show();
                     }
                 });
     }
+
+    private boolean validateInvoiceID() {
+        String val = invoiceId.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            invoiceId.setError("Field can not be empty");
+            return false;
+        } else {
+            invoiceId.setError(null);
+            invoiceId.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateAmount() {
+        String val = amount.getText().toString().trim();
+
+        if (val.isEmpty()) {
+            amount.setError("Field can not be empty");
+            return false;
+        } else {
+            amount.setError(null);
+            return true;
+        }
+    }
+
 }
